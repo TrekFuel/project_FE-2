@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css?family=Playfair+Display&display=swap&subset=cyrillic");
+.container-wrapper {
+  max-width: 1400px;
+  background: url("../images/light-veneer.png"); }
+
+body {
+  font-family: "Playfair Display", serif;
+  font-size: 14px; }
+
+header {
+  font-size: 18px; }
+
+.navbar-brand img {
+  border-radius: 7px; }
