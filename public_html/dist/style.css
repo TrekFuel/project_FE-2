@@ -12,3 +12,6 @@ header {
 
 .navbar-brand img {
   border-radius: 7px; }
+
+#searchDiv {
+  border-bottom: 3px dashed #1C6EA4; }
