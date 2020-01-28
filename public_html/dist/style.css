@@ -5,13 +5,22 @@
 
 body {
   font-family: "Playfair Display", serif;
-  font-size: 14px; }
+  font-size: 15px; }
 
 header {
-  font-size: 18px; }
+  font-size: 19px; }
 
 .navbar-brand img {
   border-radius: 7px; }
 
 #searchDiv {
   border-bottom: 3px dashed #1C6EA4; }
+
+footer li {
+  display: inline;
+  padding-right: 5px;
+  padding-bottom: 5px; }
+
+ul li a :hover {
+  transform: rotate(1turn);
+  transition: 0.5s ease-in; }

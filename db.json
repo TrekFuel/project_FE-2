@@ -1,0 +1,104 @@
+{
+  "ads": [
+    {
+      "title": "Двухподвес Trek Remedy 7",
+      "description": "Рама 18.5 виртуал, актуал 17.5, вилка Флоат РЛ, размер колёс 26, размер рамы M (17, 18), ход подвески 141-150 мм.",
+      "price": "1400 &#36;",
+      "author": "yabegu",
+      "city": "Москва",
+      "date": "27.01.2020",
+      "type": "Bike",
+      "id": 1
+    },
+    {
+      "title": "Двухподвес Commencal Meta V4.2",
+      "description": "Рама-размер L, вилка FOX 36 Performance Elite 170мм, аморт RockShox Super Deluxe RC3 160мм, тормоза Shimano SLX",
+      "price": "2210 &#36;",
+      "author": "andreyptr",
+      "city": "Петрозаводск",
+      "date": "15.09.2019",
+      "type": "Bike",
+      "id": 2
+    },
+    {
+      "title": "Хардтейл White XC 290 PRO",
+      "description": "White XC 290 PRO 2018 версия. 29 колеса. Вилка ДТ !!!! Состояние нового велосипеда. Рама размера М. Всё в топе.",
+      "price": "700 &#36;",
+      "author": "qwerty",
+      "city": "Москва",
+      "date": "24.01.2020",
+      "type": "Bike",
+      "id": 3
+    },
+    {
+      "title": "Хардтейл NS Bikes Metropolis",
+      "description": "Состояние очень хорошее, колеса 26ые. Ничего не гремит, не болтается, байк прям ощущается не укатанным и плотным.",
+      "price": "310 &#36;",
+      "author": "Slavonishe",
+      "city": "Владивосток",
+      "date": "15.01.2020",
+      "type": "Bike",
+      "id": 4
+    },
+    {
+      "title": "Двухподвес Specialized Stumpjumper S-Works",
+      "description": "Модель 2016г. Ультралегкий топовый эндуро велосипед с ходами подвески по 150mm, размер S. Околоновое состояние",
+      "price": "2620 &#36;",
+      "author": "Вячеслав",
+      "city": "Москва",
+      "date": "10.01.2020",
+      "type": "Bike",
+      "id": 5
+    },
+    {
+      "title": "Рама Scott Gambler",
+      "description": "Рама Gambler 710 (2016) L - новая, некатанная, полный комплект с буклетом, с амортом, осью, защитой труба/перо",
+      "price": "2400 &#36;",
+      "author": "trog",
+      "city": "Санкт-Петербург",
+      "date": "09.01.2020",
+      "type": "Frame",
+      "id": 6
+    },
+    {
+      "title": "Рама Bergamont Straitline",
+      "description": "Рама Bergamont Straitline без аморта. Простая, надежная и не очень технологичная, есть рабочие коцки, в целом норм",
+      "price": "400 &#36;",
+      "author": "temerden",
+      "city": "Москва",
+      "date": "19.01.2020",
+      "type": "Frame",
+      "id": 7
+    },
+    {
+      "title": "Рама YT Industries Tues",
+      "description": "Industries Tues 2016 650B. Размер М. Не влазит, не можно поставить, а именно под 27.5. По технике в идеале. Промы все живые.",
+      "price": "800 &#36;",
+      "author": "SDVR6",
+      "city": "Санкт-Петербург",
+      "date": "13.07.2019",
+      "type": "Frame",
+      "id": 8
+    },
+    {
+      "title": "Рама Black Market KillSwitch",
+      "description": "Комплект:рама, аморт RS Monarch R, рулевая колонка: состояние - мелкие царапины. Без трещин, без правки без посторонней сварки.",
+      "price": "530 &#36;",
+      "author": "apexdust",
+      "city": "Екатеринбург",
+      "date": "12.12.2019",
+      "type": "Frame",
+      "id": 9
+    },
+    {
+      "title": "Рама Canyon Sender CF 9.0",
+      "description": "В идеальном техническом состоянии. Косметическое состояние на 5 с небольшим (небольшие сколы лкп на перьях). Гарантия на раму.",
+      "price": "1500 &#36;",
+      "author": "Spartak",
+      "city": "Первоуральск",
+      "date": "24.04.2019",
+      "type": "Frame",
+      "id": 10
+    }
+  ]
+}
