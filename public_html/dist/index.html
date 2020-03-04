@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+  <title>Homework-8</title>
+  <link rel="icon" href="/images/favicon.ico" type="image/icon">
+<link href="/vendors~bundle.css" rel="stylesheet"><link href="/bundle.css" rel="stylesheet"></head>
+<body>
+<header class="container-main mx-auto mb-3">
+  <nav class="navbar navbar-expand navbar-light bg-light">
+    <a class="navbar-brand ml-2 pr-4" href="https://github.com/TrekFuel/home_tasks_FE-2" target="_blank"><img src="/images/github-logo-header-image.png" alt="GitHub" title="GitHub" width="40" height="40"></a>
+    <div id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active pr-5">
+          <button type="button" class="btn about-btn" id="aboutButton">О
+            нас
+          </button>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#contacts">Контакты<span class="sr-only"></span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<main>
+  <!--  main page-->
+  <div class="d-none" id="mainPage">
+    <div class="row container-main mx-auto mt-4">
+      <div class="col mt-3" id="filtersPage">
+        <form>
+          <div class="form-group">
+            <div class="font-weight-bold mb-2">Категория новостей</div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsCategory" value="main" id="main">
+              <label class="form-check-label" for="main">
+                Главное
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsCategory" value="russia" id="russia">
+              <label class="form-check-label" for="russia">
+                Россия
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsCategory" value="world" id="world">
+              <label class="form-check-label" for="world">
+                Мир
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsCategory" value="economics" id="economics">
+              <label class="form-check-label" for="economics">
+                Экономика
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsCategory" value="sport" id="sport">
+              <label class="form-check-label" for="sport">
+                Спорт
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsCategory" value="journeys" id="journeys">
+              <label class="form-check-label" for="journeys">
+                Путешествия
+              </label>
+            </div>
+            <div class="font-weight-bold mt-4 mb-2">Дата выхода</div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsDate" value="today" id="today">
+              <label class="form-check-label" for="today">
+                Сегодня
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsDate" value="previously" id="previously">
+              <label class="form-check-label" for="previously">
+                Ранее
+              </label>
+            </div>
+            <div class="font-weight-bold mt-4 mb-2">Активность</div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsActivity" value="high" id="high">
+              <label class="form-check-label" for="high">
+                Высокая
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsActivity" value="medium" id="medium">
+              <label class="form-check-label" for="medium">
+                Средняя
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsActivity" value="low" id="low">
+              <label class="form-check-label" for="low">
+                Низкая
+              </label>
+            </div>
+            <div class="font-weight-bold mt-4 mb-2">Рейтинг</div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsRating" value="5" id="5">
+              <label class="form-check-label" for="5">
+                &#9734; &#9734; &#9734; &#9734; &#9734;
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsRating" value="4" id="4">
+              <label class="form-check-label" for="4">
+                &#9734; &#9734; &#9734; &#9734;
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsRating" value="3" id="3">
+              <label class="form-check-label" for="3">
+                &#9734; &#9734; &#9734;
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsRating" value="2" id="2">
+              <label class="form-check-label" for="2">
+                &#9734; &#9734;
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="newsRating" value="1" id="1">
+              <label class="form-check-label" for="1">
+                &#9734;
+              </label>
+            </div>
+            <button type="button" class="btn-sm btn-primary mt-4" id="clearFiltersBtn">Очистить
+              фильтры
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="container-columns">
+        <div class="row mx-auto" id="allNewsPage">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  main page-->
+
+  <!--  single news page-->
+  <div class="row mx-auto d-none container-main" id="singleNewsPage">
+
+  </div>
+  <!--  single news page-->
+
+  <!-- post news page -->
+  <div class="row w-50 mx-auto mt-5 mb-3" id="postNewsPage">
+    <div class="col-sm-12">
+      <form id="postForm" novalidate>
+        <h5 class="mb-5">Форма обратной связи</h5>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="emailInput">Email</label>
+            <input type="email" class="form-control" name="email" id="emailInput" placeholder="Email">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="nameInput">Имя</label>
+            <input type="text" class="form-control" name="name" id="nameInput" placeholder="Имя">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="countryInput">Страна</label>
+            <input type="text" class="form-control" name="country" id="countryInput" placeholder="Страна">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="topicInput">Тема</label>
+            <input type="text" class="form-control" name="topic" id="topicInput" placeholder="Тема">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="textInput">Текст новости</label>
+          <textarea class="form-control" id="textInput" name="text" placeholder="Текст новости" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn-sm btn-primary">Отправить
+        </button>
+      </form>
+    </div>
+  </div>
+  <!-- post news page -->
+
+  <!--  about page-->
+  <div class="row mx-auto mt-5 mb-5 ml-5 container-main w-50 d-none" id="aboutPage">
+    <div class="col">
+      <img src="/images/spa-logo.jpg" alt="spa-logo" title="spa-logo" width="800" height="500" class="mb-5">
+      <p>Данный сайт новостей является Single Page Application, написанным
+        на нативном JavaScript, без использования фреймворков. При этом
+        содержит следующий функционал:</p>
+      <ul>
+        <li>страница новостей (главная - общая для всех новостей, с
+          превью - списком всех новостей);
+        </li>
+        <li>страница новости по id (подробная страница отдельной новости);
+        </li>
+        <li>страница about;</li>
+        <li>фильтрация новостей по списку параметров (чекбоксы);
+        </li>
+        <li>отправка формы с валидацией на сервер
+        </li>
+      </ul>
+      <button type="button" class="btn-primary btn-sm ml-3 mb-3 container-button back">
+        На главную
+      </button>
+    </div>
+  </div>
+  <!--  about page-->
+
+  <!--  error page-->
+  <div class="row mx-auto container-main w-50 d-none mt-5 mb-5" id="errorPage">
+    <div class="col">
+      <div class="alert alert-danger text-center" role="alert">
+        <p>404, не найдено</p>
+        <p>К сожалению, что-то пошло не так :(</p>
+      </div>
+    </div>
+  </div>
+  <!--  error page-->
+</main>
+<footer class="container-main mx-auto mt-3">
+  <div class="card text-center">
+    <div class="card-header">
+      <a name="contacts"></a>
+      <h4>Контакты</h4>
+    </div>
+    <div class="card-footer text-center">
+      <ul class="list-unstyled p-2">
+        <li>
+          <a href="https://vk.com/bolotinnikita" target="_blank">
+            <img src="/images/vk-logo.png" width="30" height="30" alt="ВК" title="ВК"></a>
+        </li>
+        <li>
+          <a href="https://twitter.com/bolotinnick" target="_blank">
+            <img src="/images/twitter-logo.png" width="30" height="30" alt="Twitter" title="Twitter"></a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/bolotinnick/" target="_blank">
+            <img src="/images/linkedin-logo.png" width="30" height="30" alt="LinkedIn" title="LinkedIn"></a>
+        </li>
+        <li>
+          <a href="https://github.com/TrekFuel" target="_blank">
+            <img src="/images/github-logo.png" width="30" height="30" alt="GitHub" title="GitHub"></a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/bolotinnick/" target="_blank">
+            <img src="/images/instagram-logo.png" width="30" height="30" alt="Instagram" title="Instagram"></a>
+        </li>
+        <li>
+          <a href="mailto:ridge96@yandex.ru?subject=website">
+            <img src="/images/email-logo.png" width="30" height="30" alt="Email" title="Email"></a>
+        </li>
+        <li>
+          <a href="https://t.me/bolotinnick" target="_blank">
+            <img src="/images/telegram-logo.png" width="30" height="30" alt="Telegram" title="Telegram"></a>
+        </li>
+        <li>
+          <a href="skype:nick-spinner96?add">
+            <img src="/images/skype-logo.png" width="30" height="30" alt="Skype" title="Skype"></a>
+        </li>
+        <li>
+          <a href="viber://chat?number=+375291328633">
+            <img src="/images/viber-logo.png" width="30" height="30" alt="Viber" title="Viber"></a>
+        </li>
+        <li>
+          <a href="https://wa.me/375291328633" target="_blank">
+            <img src="/images/whatsapp-logo.png" width="30" height="30" alt="WhatsApp" title="WhatsApp"></a>
+        </li>
+      </ul>
+      <div class="btn btn-secondary mb-2">Bolotin Nikita &copy;, 2020 <br>
+        FE-2
+        Courses
+      </div>
+    </div>
+    <div class="text-left m-2">
+      <a href="#top" class="btn btn-primary ml-3" id="btn">Наверх
+        &uarr;</a>
+    </div>
+  </div>
+</footer>
+<script type="text/javascript" src="/vendors~bundle.js"></script><script type="text/javascript" src="/bundle.js"></script></body>
+</html>

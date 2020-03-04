@@ -1,0 +1,70 @@
+@import "~bootstrap/dist/css/bootstrap.css", "variables", "roboto.css";
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $MainFontFamily;
+  font-size: $MainFontSize;
+}
+
+.btn {
+  font-size: $MainFontSize + 0.05;
+}
+
+.sign {
+  max-width: 36rem;
+}
+
+.sign .btn {
+  font-size: $MainFontSize - 0.15;
+}
+
+#aboutPage {
+  max-width: 75rem;
+}
+
+.container-main {
+  max-width: 1300px;
+}
+
+.container-columns {
+  max-width: 1000px;
+}
+
+.card-body h6 {
+  font-size: $MainFontSize - 0.12;
+}
+
+#allNewsPage p {
+  font-size: $MainFontSize - 0.25;
+}
+
+#singleNewsPage p {
+  font-size: $MainFontSize - 0.25;
+}
+
+#postNewsPage {
+  font-size: $MainFontSize - 0.25;
+}
+
+.container-button {
+  max-width: 100px;
+}
+
+footer li {
+  display: inline;
+  padding-right: 12px;
+  padding-bottom: 12px;
+}
+
+footer li :hover {
+  transform: rotate(1turn);
+  transition: 0.7s ease-in;
+}
+
+footer .btn {
+  font-size: $MainFontSize - 0.15;
+}
+

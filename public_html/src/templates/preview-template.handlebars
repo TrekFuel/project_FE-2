@@ -1,0 +1,25 @@
+{{#each this}}
+  <div class="col-md-4 mb-4 mt-3 single-news" data-index="{{id}}">
+    <div class="card">
+      <img src="{{image.small}}"
+           class="rounded mx-auto d-block mt-3"
+           width="180"
+           height="120"
+           alt="{{title}}"
+           title="{{title}}"/>
+      <div class="card-body">
+        <h6 class="text-center">
+          {{title}}
+        </h6>
+        <p class="text-muted">категория: {{features.newsCategory}}; дата выхода:
+          {{features.newsDate}}; активность: {{features.newsActivity}};
+          рейтинг: {{features.newsRating}}</p>
+      </div>
+      <button type="button"
+              class="btn-primary btn-sm w-25 mx-auto mb-3 single-news-btn"
+              data-index="{{id}}">
+        Читать
+      </button>
+    </div>
+  </div>
+{{/each}}

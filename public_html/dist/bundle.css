@@ -1,0 +1,58 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url(/11eabca2251325cfc5589c9c6fb57b46.ttf) format('truetype');
+}
+html {
+  scroll-behavior: smooth; }
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.2rem; }
+
+.btn {
+  font-size: 1.25rem; }
+
+.sign {
+  max-width: 36rem; }
+
+.sign .btn {
+  font-size: 1.05rem; }
+
+#aboutPage {
+  max-width: 75rem; }
+
+.container-main {
+  max-width: 1300px; }
+
+.container-columns {
+  max-width: 1000px; }
+
+.card-body h6 {
+  font-size: 1.08rem; }
+
+#allNewsPage p {
+  font-size: 0.95rem; }
+
+#singleNewsPage p {
+  font-size: 0.95rem; }
+
+#postNewsPage {
+  font-size: 0.95rem; }
+
+.container-button {
+  max-width: 100px; }
+
+footer li {
+  display: inline;
+  padding-right: 12px;
+  padding-bottom: 12px; }
+
+footer li :hover {
+  transform: rotate(1turn);
+  transition: 0.7s ease-in; }
+
+footer .btn {
+  font-size: 1.05rem; }
+
+
+/*# sourceMappingURL=bundle.css.map*/
