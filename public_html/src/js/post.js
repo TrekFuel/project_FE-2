@@ -63,6 +63,7 @@ export class Post {
           successMsg.remove();
         }, 5000);
       },
+
       invalidHandler: () => {
         const errorMsg = document.createElement('div');
         errorMsg.innerHTML = 'Пожалуйста, проверьте правильность ввода данных!';
@@ -74,6 +75,7 @@ export class Post {
           errorMsg.remove();
         }, 5000);
       },
+
       rules: {
         email: {
           required: true,
@@ -95,6 +97,17 @@ export class Post {
           required: true,
           minlength: 50,
         },
+      },
+
+      messages: {
+        email: {
+          required: 'Пожалуйста, введите Ваш email',
+          email: 'Ввведите Ваш email в корректном формате, пожалуйста (test@gmail.com)',
+        },
+        name: 'Пожалуйста, введите Ваше имя (минимум 2 буквы)',
+        country: 'Пожалуйста, введите Вашу страну (минимум 3 буквы)',
+        topic: 'Пожалуйста, введите тему Вашей новости (минимум 10 символов)',
+        text: 'Пожалуйста, расскажите про Вашу новость (минимум 50 символов)',
       },
       validClass: 'text-success',
       errorClass: 'text-danger',

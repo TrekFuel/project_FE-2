@@ -2,13 +2,13 @@
   <div class="col-md-4 mb-4 mt-3 single-news" data-index="{{id}}">
     <div class="card">
       <img src="{{image.small}}"
-           class="rounded mx-auto d-block mt-3"
-           width="180"
-           height="120"
+           class="rounded mx-auto d-block mt-3 img-fluid"
+           width="240"
+           height="135"
            alt="{{title}}"
            title="{{title}}"/>
       <div class="card-body">
-        <h6 class="text-center">
+        <h6 class="text-center single-news-title" data-index="{{id}}">
           {{title}}
         </h6>
         <p class="text-muted">категория: {{features.newsCategory}}; дата выхода:

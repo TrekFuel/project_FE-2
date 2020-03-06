@@ -4,34 +4,48 @@
   <meta charset="UTF-8">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <title>Homework-8</title>
+  <title>News SPA</title>
   <link rel="icon" href="/images/favicon.ico" type="image/icon">
 </head>
 <body>
-<header class="container-main mx-auto mb-3">
-  <nav class="navbar navbar-expand navbar-light bg-light">
-    <a class="navbar-brand ml-2 pr-4"
-       href="https://github.com/TrekFuel/home_tasks_FE-2" target="_blank"><img
-        src="/images/github-logo-header-image.png"
-        alt="GitHub" title="GitHub"
-        width="40" height="40"/></a>
-    <div id="navbarSupportedContent">
+<header class="container-main mx-auto mb-3 backBtn" id="header">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <img src="/images/github-logo-header-image.png" width="40"
+         height="40" alt="GitHub" title="GitHub">
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active pr-5">
-          <button type="button" class="btn about-btn" id="aboutButton">О
-            нас
-          </button>
+        <li class="nav-item active ml-3 mr-5">
+          <button class="nav-link btn main-btn text-monospace" id="mainButton">
+            Главная
+            <span
+                class="sr-only"></span></button>
+        </li>
+        <li class="nav-item active mr-5">
+          <button class="nav-link btn about-btn" id="aboutButton">О нас<span
+              class="sr-only"></span></button>
+        </li>
+        <li class="nav-item active mr-5">
+          <button class="nav-link btn feedback-btn"
+                  id="feedbackButton">Обратная связь<span
+              class="sr-only"></span></button>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="#contacts">Контакты<span
-              class="sr-only"></span></a>
+          <button class="nav-link btn contacts-btn"
+                  id="contactsButton">Контакты<span
+              class="sr-only"></span></button>
         </li>
       </ul>
     </div>
   </nav>
 </header>
 <main>
-  <!--  main page-->
+  <!--  main page rout-->
   <div class="d-none" id="mainPage">
     <div class="row container-main mx-auto mt-4">
       <div class="col mt-3" id="filtersPage">
@@ -185,7 +199,7 @@
                 &#9734;
               </label>
             </div>
-            <button type="button" class="btn-sm btn-primary mt-4"
+            <button type="reset" class="btn-sm btn-primary mt-4"
                     id="clearFiltersBtn">Очистить
               фильтры
             </button>
@@ -199,17 +213,27 @@
       </div>
     </div>
   </div>
-  <!--  main page-->
+  <!--  main page rout-->
 
-  <!--  single news page-->
+  <!--  single news page rout-->
   <div class="row mx-auto d-none container-main" id="singleNewsPage">
 
   </div>
-  <!--  single news page-->
+  <!--  single news page rout-->
 
-  <!-- post news page -->
-  <div class="row w-50 mx-auto mt-5 mb-3" id="postNewsPage">
-    <div class="col-sm-12">
+  <!-- post news page rout-->
+  <div class="row w-50 mx-auto mt-5 mb-3 d-none" id="postNewsPage">
+    <div class="col-12 mt-4 text-center">
+      <img
+          src="/images/feedback-image.jpeg"
+          alt="feedback-image" title="feedback-image"
+          width="500" height="320" class="mb-5 img-fluid"/>
+    </div>
+    <div class="col-12 mb-3">
+      <p>Здравствуйте! <br> Если у Вас есть чем с нами поделиться, пожалуйста,
+        заполните форму ниже и мы обязательно Вам ответим. Спасибо!</p>
+    </div>
+    <div class="col-12">
       <form id="postForm" novalidate>
         <h5 class="mb-5">Форма обратной связи</h5>
         <div class="form-row">
@@ -249,16 +273,16 @@
       </form>
     </div>
   </div>
-  <!-- post news page -->
+  <!-- post news page rout-->
 
-  <!--  about page-->
+  <!--  about page rout-->
   <div class="row mx-auto mt-5 mb-5 ml-5 container-main w-50 d-none"
        id="aboutPage">
     <div class="col">
       <img
           src="/images/spa-logo.jpg"
           alt="spa-logo" title="spa-logo"
-          width="800" height="500" class="mb-5"/>
+          width="800" height="500" class="mb-5 img-fluid"/>
       <p>Данный сайт новостей является Single Page Application, написанным
         на нативном JavaScript, без использования фреймворков. При этом
         содержит следующий функционал:</p>
@@ -268,21 +292,19 @@
         </li>
         <li>страница новости по id (подробная страница отдельной новости);
         </li>
-        <li>страница about;</li>
-        <li>фильтрация новостей по списку параметров (чекбоксы);
+        <li>страница "О нас";
         </li>
-        <li>отправка формы с валидацией на сервер
+        <li>страница для обратной связи с отправкой формы с валидацией на
+          сервер;
+        </li>
+        <li>фильтрация новостей по списку параметров (чекбоксы).
         </li>
       </ul>
-      <button type="button"
-              class="btn-primary btn-sm ml-3 mb-3 container-button back">
-        На главную
-      </button>
     </div>
   </div>
-  <!--  about page-->
+  <!--  about page rout-->
 
-  <!--  error page-->
+  <!--  error page rout-->
   <div class="row mx-auto container-main w-50 d-none mt-5 mb-5" id="errorPage">
     <div class="col">
       <div class="alert alert-danger text-center" role="alert">
@@ -291,12 +313,11 @@
       </div>
     </div>
   </div>
-  <!--  error page-->
+  <!--  error page rout-->
 </main>
 <footer class="container-main mx-auto mt-3">
   <div class="card text-center">
-    <div class="card-header">
-      <a name="contacts"></a>
+    <div class="card-header contacts">
       <h4>Контакты</h4>
     </div>
     <div class="card-footer text-center">
