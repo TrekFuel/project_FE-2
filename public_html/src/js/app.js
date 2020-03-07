@@ -11,12 +11,14 @@ import { Post } from './post';
 class App {
   constructor() {
     this.news = [];
+    this.comments = [];
     this.router = new Router();
     this.checkboxService = new CheckboxService();
     this.render = new Render(this.checkboxService, this.router);
     this.checkboxService.subscribe(this.onFilterChange.bind(this));
     this.post = new Post();
     this.init();
+    this.initComments();
   }
 
   init() {
@@ -31,12 +33,27 @@ class App {
         this.news = data;
         this.render.generateAllNews(data);
         this.render.initSingleNewsPage();
+        this.post.initComment();
         this.render.initResetCheckbox();
         this.render.initAboutPage();
         this.render.initPostNewsPage();
         this.post.initPost();
         this.initRouter();
         this.router.render(decodeURI(window.location.pathname));
+      });
+  }
+
+  initComments() {
+    fetch(`${CONFIG.api}/comments`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        this.comments = data;
+        this.render.renderComments(data);
       });
   }
 

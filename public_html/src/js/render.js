@@ -4,6 +4,7 @@ import { CONFIG } from './config';
 
 const previewTemplate = require('../templates/preview-template.handlebars');
 const viewTemplate = require('../templates/view-template.handlebars');
+const commentTemplate = require('../templates/comments-template.handlebars');
 
 // eslint-disable-next-line import/prefer-default-export
 export class Render {
@@ -105,6 +106,7 @@ export class Render {
   // eslint-disable-next-line class-methods-use-this
   renderSingleNewsPage(newsElems) {
     const { singleNewsPage } = CONFIG.elements;
+    const { singleNewsContainer } = CONFIG.elements;
     const index = window.location.pathname.split('/news/')[1].trim();
     let isFind = false;
 
@@ -112,7 +114,7 @@ export class Render {
       newsElems.forEach((news) => {
         if (Number(news.id) === Number(index)) {
           isFind = true;
-          singleNewsPage.innerHTML = viewTemplate(news);
+          singleNewsContainer.innerHTML = viewTemplate(news);
         }
       });
     }
@@ -120,6 +122,12 @@ export class Render {
     // eslint-disable-next-line no-unused-expressions
     isFind ? singleNewsPage.classList.add(CONFIG.displayBlock)
       : this.renderErrorPage();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  renderComments(data) {
+    const { commentsContainer } = CONFIG.elements;
+    commentsContainer.innerHTML = commentTemplate(data);
   }
 
   renderErrorPage() {
@@ -224,14 +232,14 @@ export class Render {
         filter[option].forEach((item) => {
           newsElemsCopy.forEach((news) => {
             if (typeof news.features[option] === 'string'
-              && news.features[option].toLowerCase()
-                .indexOf(item) !== -1) {
+                            && news.features[option].toLowerCase()
+                              .indexOf(item) !== -1) {
               result.push(news);
               isFiltered = true;
             }
 
             if (typeof news.features[option] === 'number'
-              && news.features[option] === Number(item)) {
+                            && news.features[option] === Number(item)) {
               result.push(news);
               isFiltered = true;
             }

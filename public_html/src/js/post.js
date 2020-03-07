@@ -3,6 +3,8 @@ import 'jquery-validation';
 
 import { CONFIG } from './config';
 
+const commentTemplate = require('../templates/comments-template.handlebars');
+
 // eslint-disable-next-line import/prefer-default-export
 export class Post {
   constructor() {
@@ -44,6 +46,56 @@ export class Post {
         countryInput.value = '';
         topicInput.value = '';
         textInput.value = '';
+      });
+  }
+
+  sendComment() {
+    const { commentTitle } = CONFIG.elements;
+    const { commentAuthor } = CONFIG.elements;
+    const { commentText } = CONFIG.elements;
+
+    fetch(`${this.api}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(
+        {
+          title: `${commentTitle.value}`,
+          author: `${commentAuthor.value}`,
+          text: `${commentText.value}`,
+        },
+      ),
+    })
+      .then((res) => {
+        if (res.status !== 201) {
+          return Promise.reject(new Error(res.statusText));
+        }
+        return Promise.resolve(res);
+      })
+      .then(() => {
+        commentTitle.value = '';
+        commentAuthor.value = '';
+        commentText.value = '';
+      })
+      .then(() => {
+        this.getNewComment();
+      });
+  }
+
+  getNewComment() {
+    const { commentsContainer } = CONFIG.elements;
+
+    fetch(`${CONFIG.api}/comments`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        this.comments = data;
+        commentsContainer.innerHTML = commentTemplate(data);
       });
   }
 
@@ -114,5 +166,14 @@ export class Post {
     };
     $('#postForm')
       .validate(options);
+  }
+
+  initComment() {
+    const { postCommentButton } = CONFIG.elements;
+
+    postCommentButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.sendComment();
+    });
   }
 }

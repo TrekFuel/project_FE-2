@@ -157,7 +157,39 @@
 
   <!--  single news page rout-->
   <div class="row mx-auto d-none container-main" id="singleNewsPage">
+    <div id="singleNewsContainer">
 
+    </div>
+    <div class="row mx-auto mt-5 w-50" id="commentsSection">
+      <div class="mx-auto" id="commentsForm">
+        <h5 class="mb-4">Отправить комментарий</h5>
+        <form class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <label for="commentTitle">Тема</label>
+              <input type="text" class="form-control" id="commentTitle" name="commentTitle" value="" aria-describedby="title" required>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="commentAuthor">Автор</label>
+              <input type="text" class="form-control" id="commentAuthor" name="commentAuthor" value="" required>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="commentText">Текст</label>
+              <textarea class="form-control" id="commentText" name="commentText" rows="5" required></textarea>
+            </div>
+          </div>
+        </form>
+        <button type="submit" class="btn-sm btn-success mt-3 mb-4" id="postCommentButton">Отправить
+        </button>
+      </div>
+      <div id="commentsContainer">
+
+      </div>
+    </div>
   </div>
   <!--  single news page rout-->
 
@@ -172,7 +204,7 @@
     </div>
     <div class="col-12">
       <form id="postForm" novalidate>
-        <h5 class="mb-5">Форма обратной связи</h5>
+        <h5 class="mt-5 mb-5">Форма обратной связи</h5>
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="emailInput">Email</label>

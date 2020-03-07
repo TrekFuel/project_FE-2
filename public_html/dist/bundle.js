@@ -194,12 +194,14 @@ function () {
     _classCallCheck(this, App);
 
     this.news = [];
+    this.comments = [];
     this.router = new _router__WEBPACK_IMPORTED_MODULE_4__["Router"]();
     this.checkboxService = new _checkbox_service__WEBPACK_IMPORTED_MODULE_5__["CheckboxService"]();
     this.render = new _render__WEBPACK_IMPORTED_MODULE_3__["Render"](this.checkboxService, this.router);
     this.checkboxService.subscribe(this.onFilterChange.bind(this));
     this.post = new _post__WEBPACK_IMPORTED_MODULE_6__["Post"]();
     this.init();
+    this.initComments();
   }
 
   _createClass(App, [{
@@ -221,6 +223,8 @@ function () {
 
         _this.render.initSingleNewsPage();
 
+        _this.post.initComment();
+
         _this.render.initResetCheckbox();
 
         _this.render.initAboutPage();
@@ -232,6 +236,24 @@ function () {
         _this.initRouter();
 
         _this.router.render(decodeURI(window.location.pathname));
+      });
+    }
+  }, {
+    key: "initComments",
+    value: function initComments() {
+      var _this2 = this;
+
+      fetch("".concat(_config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].api, "/comments"), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        _this2.comments = data;
+
+        _this2.render.renderComments(data);
       });
     }
   }, {
@@ -396,6 +418,12 @@ var CONFIG = {
     filtersPage: document.getElementById('filtersPage'),
     allNewsPage: document.getElementById('allNewsPage'),
     singleNewsPage: document.getElementById('singleNewsPage'),
+    singleNewsContainer: document.getElementById('singleNewsContainer'),
+    commentTitle: document.getElementById('commentTitle'),
+    commentAuthor: document.getElementById('commentAuthor'),
+    commentText: document.getElementById('commentText'),
+    postCommentButton: document.getElementById('postCommentButton'),
+    commentsContainer: document.getElementById('commentsContainer'),
     aboutPage: document.getElementById('aboutPage'),
     postNewsPage: document.getElementById('postNewsPage'),
     postForm: document.getElementById('postForm'),
@@ -486,7 +514,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
- // eslint-disable-next-line import/prefer-default-export
+
+
+var commentTemplate = __webpack_require__(/*! ../templates/comments-template.handlebars */ "./templates/comments-template.handlebars"); // eslint-disable-next-line import/prefer-default-export
+
 
 var Post =
 /*#__PURE__*/
@@ -531,16 +562,66 @@ function () {
         topicInput.value = '';
         textInput.value = '';
       });
+    }
+  }, {
+    key: "sendComment",
+    value: function sendComment() {
+      var _this = this;
+
+      var commentTitle = _config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].elements.commentTitle;
+      var commentAuthor = _config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].elements.commentAuthor;
+      var commentText = _config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].elements.commentText;
+      fetch("".concat(this.api, "/comments"), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: "".concat(commentTitle.value),
+          author: "".concat(commentAuthor.value),
+          text: "".concat(commentText.value)
+        })
+      }).then(function (res) {
+        if (res.status !== 201) {
+          return Promise.reject(new Error(res.statusText));
+        }
+
+        return Promise.resolve(res);
+      }).then(function () {
+        commentTitle.value = '';
+        commentAuthor.value = '';
+        commentText.value = '';
+      }).then(function () {
+        _this.getNewComment();
+      });
+    }
+  }, {
+    key: "getNewComment",
+    value: function getNewComment() {
+      var _this2 = this;
+
+      var commentsContainer = _config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].elements.commentsContainer;
+      fetch("".concat(_config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].api, "/comments"), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        _this2.comments = data;
+        commentsContainer.innerHTML = commentTemplate(data);
+      });
     } // eslint-disable-next-line class-methods-use-this
 
   }, {
     key: "initPost",
     value: function initPost() {
-      var _this = this;
+      var _this3 = this;
 
       var options = {
         submitHandler: function submitHandler() {
-          _this.sendPost();
+          _this3.sendPost();
 
           var successMsg = document.createElement('div');
           successMsg.innerHTML = 'Ваша новость была успешно отправлена. Спасибо!';
@@ -596,6 +677,18 @@ function () {
       };
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('#postForm').validate(options);
     }
+  }, {
+    key: "initComment",
+    value: function initComment() {
+      var _this4 = this;
+
+      var postCommentButton = _config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].elements.postCommentButton;
+      postCommentButton.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        _this4.sendComment();
+      });
+    }
   }]);
 
   return Post;
@@ -635,7 +728,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var previewTemplate = __webpack_require__(/*! ../templates/preview-template.handlebars */ "./templates/preview-template.handlebars");
 
-var viewTemplate = __webpack_require__(/*! ../templates/view-template.handlebars */ "./templates/view-template.handlebars"); // eslint-disable-next-line import/prefer-default-export
+var viewTemplate = __webpack_require__(/*! ../templates/view-template.handlebars */ "./templates/view-template.handlebars");
+
+var commentTemplate = __webpack_require__(/*! ../templates/comments-template.handlebars */ "./templates/comments-template.handlebars"); // eslint-disable-next-line import/prefer-default-export
 
 
 var Render =
@@ -747,6 +842,7 @@ function () {
     key: "renderSingleNewsPage",
     value: function renderSingleNewsPage(newsElems) {
       var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsPage;
+      var singleNewsContainer = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsContainer;
       var index = window.location.pathname.split('/news/')[1].trim();
       var isFind = false;
 
@@ -754,13 +850,20 @@ function () {
         newsElems.forEach(function (news) {
           if (Number(news.id) === Number(index)) {
             isFind = true;
-            singleNewsPage.innerHTML = viewTemplate(news);
+            singleNewsContainer.innerHTML = viewTemplate(news);
           }
         });
       } // eslint-disable-next-line no-unused-expressions
 
 
       isFind ? singleNewsPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock) : this.renderErrorPage();
+    } // eslint-disable-next-line class-methods-use-this
+
+  }, {
+    key: "renderComments",
+    value: function renderComments(data) {
+      var commentsContainer = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.commentsContainer;
+      commentsContainer.innerHTML = commentTemplate(data);
     }
   }, {
     key: "renderErrorPage",
@@ -1019,6 +1122,43 @@ function () {
 // extracted by mini-css-extract-plugin
     if(false) { var cssReload; }
   
+
+/***/ }),
+
+/***/ "./templates/comments-template.handlebars":
+/*!************************************************!*\
+  !*** ./templates/comments-template.handlebars ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Handlebars = __webpack_require__(/*! ../../node_modules/handlebars/runtime.js */ "../node_modules/handlebars/runtime.js");
+function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "  <div class=\"row mt-5\" style=\"border-bottom: 1px dashed black\">\n    <div class=\"col-sm-12\">\n      <h6 class=\"title\">"
+    + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":4,"column":24},"end":{"line":4,"column":33}}}) : helper)))
+    + "</h6>\n    </div>\n    <div class=\"col-sm-12\">\n      <p class=\"author font-italic\">"
+    + alias4(((helper = (helper = lookupProperty(helpers,"author") || (depth0 != null ? lookupProperty(depth0,"author") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"author","hash":{},"data":data,"loc":{"start":{"line":7,"column":36},"end":{"line":7,"column":46}}}) : helper)))
+    + "</p>\n    </div>\n    <div class=\"col-sm-12\">\n      <p class=\"text\">"
+    + alias4(((helper = (helper = lookupProperty(helpers,"text") || (depth0 != null ? lookupProperty(depth0,"text") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"text","hash":{},"data":data,"loc":{"start":{"line":10,"column":22},"end":{"line":10,"column":30}}}) : helper)))
+    + "</p>\n    </div>\n  </div>\n";
+},"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return ((stack1 = lookupProperty(helpers,"each").call(depth0 != null ? depth0 : (container.nullContext || {}),depth0,{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":1,"column":0},"end":{"line":13,"column":9}}})) != null ? stack1 : "");
+},"useData":true});
 
 /***/ }),
 
