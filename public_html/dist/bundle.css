@@ -37,7 +37,10 @@ body {
   font-size: 0.95rem; }
 
 #postNewsPage {
-  font-size: 0.95rem; }
+  font-size: 1.05rem; }
+
+#commentsSection {
+  font-size: 1.05rem; }
 
 .container-button {
   max-width: 100px; }

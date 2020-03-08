@@ -164,18 +164,21 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _styles_style_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../styles/style.scss */ "./styles/style.scss");
-/* harmony import */ var _styles_style_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_styles_style_scss__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config */ "./js/config.js");
-/* harmony import */ var _render__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./render */ "./js/render.js");
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./router */ "./js/router.js");
-/* harmony import */ var _checkbox_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./checkbox-service */ "./js/checkbox-service.js");
-/* harmony import */ var _post__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./post */ "./js/post.js");
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap */ "../node_modules/bootstrap/dist/js/bootstrap.js");
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _styles_style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styles/style.scss */ "./styles/style.scss");
+/* harmony import */ var _styles_style_scss__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_styles_style_scss__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config */ "./js/config.js");
+/* harmony import */ var _render__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./render */ "./js/render.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./router */ "./js/router.js");
+/* harmony import */ var _checkbox_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./checkbox-service */ "./js/checkbox-service.js");
+/* harmony import */ var _post__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./post */ "./js/post.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -191,12 +194,14 @@ function () {
     _classCallCheck(this, App);
 
     this.news = [];
-    this.router = new _router__WEBPACK_IMPORTED_MODULE_3__["Router"]();
-    this.checkboxService = new _checkbox_service__WEBPACK_IMPORTED_MODULE_4__["CheckboxService"]();
-    this.render = new _render__WEBPACK_IMPORTED_MODULE_2__["Render"](this.checkboxService, this.router);
+    this.comments = [];
+    this.router = new _router__WEBPACK_IMPORTED_MODULE_4__["Router"]();
+    this.checkboxService = new _checkbox_service__WEBPACK_IMPORTED_MODULE_5__["CheckboxService"]();
+    this.render = new _render__WEBPACK_IMPORTED_MODULE_3__["Render"](this.checkboxService, this.router);
     this.checkboxService.subscribe(this.onFilterChange.bind(this));
-    this.post = new _post__WEBPACK_IMPORTED_MODULE_5__["Post"]();
+    this.post = new _post__WEBPACK_IMPORTED_MODULE_6__["Post"]();
     this.init();
+    this.initComments();
   }
 
   _createClass(App, [{
@@ -204,7 +209,7 @@ function () {
     value: function init() {
       var _this = this;
 
-      fetch("".concat(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].api, "/news"), {
+      fetch("".concat(_config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].api, "/news"), {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -216,13 +221,17 @@ function () {
 
         _this.render.generateAllNews(data);
 
-        _this.post.initPost();
-
         _this.render.initSingleNewsPage();
+
+        _this.post.initComment();
+
+        _this.render.initResetCheckbox();
 
         _this.render.initAboutPage();
 
-        _this.render.initResetCheckbox();
+        _this.render.initPostNewsPage();
+
+        _this.post.initPost();
 
         _this.initRouter();
 
@@ -230,12 +239,31 @@ function () {
       });
     }
   }, {
+    key: "initComments",
+    value: function initComments() {
+      var _this2 = this;
+
+      fetch("".concat(_config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].api, "/comments"), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        _this2.comments = data;
+
+        _this2.render.renderComments(data);
+      });
+    }
+  }, {
     key: "initRouter",
     value: function initRouter() {
       this.router.addRoute('', this.render.renderMainPage.bind(this.render, this.news));
       this.router.addRoute('news', this.render.renderSingleNewsPage.bind(this.render, this.news));
-      this.router.addRoute('about', this.render.renderAboutPage.bind(this.render, this.news));
       this.router.addRoute('filter', this.render.renderFilterResult.bind(this.render, this.news, this.checkboxService.filters));
+      this.router.addRoute('about', this.render.renderAboutPage.bind(this.render, this.news));
+      this.router.addRoute('feedback', this.render.renderPostNewsPage.bind(this.render, this.news));
     }
   }, {
     key: "onFilterChange",
@@ -390,6 +418,12 @@ var CONFIG = {
     filtersPage: document.getElementById('filtersPage'),
     allNewsPage: document.getElementById('allNewsPage'),
     singleNewsPage: document.getElementById('singleNewsPage'),
+    singleNewsContainer: document.getElementById('singleNewsContainer'),
+    commentTitle: document.getElementById('commentTitle'),
+    commentAuthor: document.getElementById('commentAuthor'),
+    commentText: document.getElementById('commentText'),
+    postCommentButton: document.getElementById('postCommentButton'),
+    commentsContainer: document.getElementById('commentsContainer'),
     aboutPage: document.getElementById('aboutPage'),
     postNewsPage: document.getElementById('postNewsPage'),
     postForm: document.getElementById('postForm'),
@@ -399,11 +433,11 @@ var CONFIG = {
     topicInput: document.getElementById('topicInput'),
     textInput: document.getElementById('textInput'),
     aboutButton: document.getElementById('aboutButton'),
-    backButton: document.getElementById('backButton'),
-    header: document.getElementsByTagName('header'),
     errorPage: document.getElementById('errorPage'),
     checkboxes: document.querySelector('#filtersPage').querySelectorAll('input[type=checkbox]'),
-    clearFiltersBtn: document.getElementById('clearFiltersBtn')
+    clearFiltersBtn: document.getElementById('clearFiltersBtn'),
+    feedbackButton: document.getElementById('feedbackButton'),
+    header: document.getElementById('header')
   },
   displayNone: 'd-none',
   displayBlock: 'd-block',
@@ -480,7 +514,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
- // eslint-disable-next-line import/prefer-default-export
+
+
+var commentTemplate = __webpack_require__(/*! ../templates/comments-template.handlebars */ "./templates/comments-template.handlebars"); // eslint-disable-next-line import/prefer-default-export
+
 
 var Post =
 /*#__PURE__*/
@@ -525,16 +562,66 @@ function () {
         topicInput.value = '';
         textInput.value = '';
       });
+    }
+  }, {
+    key: "sendComment",
+    value: function sendComment() {
+      var _this = this;
+
+      var commentTitle = _config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].elements.commentTitle;
+      var commentAuthor = _config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].elements.commentAuthor;
+      var commentText = _config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].elements.commentText;
+      fetch("".concat(this.api, "/comments"), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: "".concat(commentTitle.value),
+          author: "".concat(commentAuthor.value),
+          text: "".concat(commentText.value)
+        })
+      }).then(function (res) {
+        if (res.status !== 201) {
+          return Promise.reject(new Error(res.statusText));
+        }
+
+        return Promise.resolve(res);
+      }).then(function () {
+        commentTitle.value = '';
+        commentAuthor.value = '';
+        commentText.value = '';
+      }).then(function () {
+        _this.getNewComment();
+      });
+    }
+  }, {
+    key: "getNewComment",
+    value: function getNewComment() {
+      var _this2 = this;
+
+      var commentsContainer = _config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].elements.commentsContainer;
+      fetch("".concat(_config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].api, "/comments"), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        _this2.comments = data;
+        commentsContainer.innerHTML = commentTemplate(data);
+      });
     } // eslint-disable-next-line class-methods-use-this
 
   }, {
     key: "initPost",
     value: function initPost() {
-      var _this = this;
+      var _this3 = this;
 
       var options = {
         submitHandler: function submitHandler() {
-          _this.sendPost();
+          _this3.sendPost();
 
           var successMsg = document.createElement('div');
           successMsg.innerHTML = 'Ваша новость была успешно отправлена. Спасибо!';
@@ -575,10 +662,32 @@ function () {
             minlength: 50
           }
         },
+        messages: {
+          email: {
+            required: 'Пожалуйста, введите Ваш email',
+            email: 'Ввведите Ваш email в корректном формате, пожалуйста (test@gmail.com)'
+          },
+          name: 'Пожалуйста, введите Ваше имя (минимум 2 буквы)',
+          country: 'Пожалуйста, введите Вашу страну (минимум 3 буквы)',
+          topic: 'Пожалуйста, введите тему Вашей новости (минимум 10 символов)',
+          text: 'Пожалуйста, расскажите про Вашу новость (минимум 50 символов)'
+        },
         validClass: 'text-success',
         errorClass: 'text-danger'
       };
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('#postForm').validate(options);
+    }
+  }, {
+    key: "initComment",
+    value: function initComment() {
+      var _this4 = this;
+
+      var postCommentButton = _config__WEBPACK_IMPORTED_MODULE_2__["CONFIG"].elements.postCommentButton;
+      postCommentButton.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        _this4.sendComment();
+      });
     }
   }]);
 
@@ -597,7 +706,9 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Render", function() { return Render; });
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./js/config.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "../node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config */ "./js/config.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -614,9 +725,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
 var previewTemplate = __webpack_require__(/*! ../templates/preview-template.handlebars */ "./templates/preview-template.handlebars");
 
-var viewTemplate = __webpack_require__(/*! ../templates/view-template.handlebars */ "./templates/view-template.handlebars"); // eslint-disable-next-line import/prefer-default-export
+var viewTemplate = __webpack_require__(/*! ../templates/view-template.handlebars */ "./templates/view-template.handlebars");
+
+var commentTemplate = __webpack_require__(/*! ../templates/comments-template.handlebars */ "./templates/comments-template.handlebars"); // eslint-disable-next-line import/prefer-default-export
 
 
 var Render =
@@ -631,25 +745,37 @@ function () {
 
 
   _createClass(Render, [{
+    key: "scrollToContacts",
+    value: function scrollToContacts() {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#contactsButton').click(function () {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()([document.documentElement, document.body]).animate({
+          scrollTop: jquery__WEBPACK_IMPORTED_MODULE_0___default()('.contacts').offset().top
+        }, 0);
+      });
+    } // eslint-disable-next-line class-methods-use-this
+
+  }, {
     key: "renderMainPage",
     value: function renderMainPage(newsElems) {
-      var mainPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.mainPage;
+      var mainPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.mainPage;
+      var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsPage;
+      this.scrollToContacts();
       var allNews = document.querySelectorAll('.single-news');
 
       _toConsumableArray(allNews).forEach(function (news) {
-        news.classList.add(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayNone);
+        news.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayNone);
       });
 
       _toConsumableArray(allNews).forEach(function (news) {
         newsElems.forEach(function (item) {
           if (Number(news.dataset.index) === Number(item.id)) {
-            news.classList.remove(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayNone);
+            news.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayNone);
           }
         });
       });
 
-      mainPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock);
-      this.singleNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock);
+      mainPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      singleNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
     } // eslint-disable-next-line class-methods-use-this
 
   }, {
@@ -657,10 +783,24 @@ function () {
     value: function generateAllNews(data) {
       var _this = this;
 
-      var mainPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.mainPage;
-      var allNewsPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.allNewsPage;
+      var mainPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.mainPage;
+      var allNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.allNewsPage;
       allNewsPage.innerHTML = previewTemplate(data);
+      var singleNewsTitle = document.querySelectorAll('.single-news-title');
       var singleNewsButton = document.querySelectorAll('.single-news-btn');
+      singleNewsTitle.forEach(function (title) {
+        // eslint-disable-next-line no-param-reassign
+        title.style.cursor = 'pointer';
+        title.addEventListener('click', function (event) {
+          event.preventDefault();
+          var index = title.dataset.index;
+          window.history.pushState(null, null, "/news/".concat(index));
+
+          _this.router.render(decodeURI(window.location.pathname));
+
+          mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+        });
+      });
       singleNewsButton.forEach(function (button) {
         button.addEventListener('click', function (event) {
           event.preventDefault();
@@ -669,7 +809,7 @@ function () {
 
           _this.router.render(decodeURI(window.location.pathname));
 
-          mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock);
+          mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
         });
       });
     }
@@ -678,26 +818,31 @@ function () {
     value: function initSingleNewsPage() {
       var _this2 = this;
 
-      this.singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.singleNewsPage;
-      this.singleNewsPage.addEventListener('click', function (event) {
-        event.preventDefault();
+      var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsPage;
+      var header = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.header;
+      singleNewsPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
 
-        if (_this2.singleNewsPage.classList.contains(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock)) {
+      if (singleNewsPage.classList.contains(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock)) {
+        header.addEventListener('click', function (event) {
+          event.preventDefault();
           var clicked = event.target;
 
-          if (clicked.classList.contains('back')) {
+          if (clicked.classList.contains('main-btn')) {
+            event.preventDefault();
+            singleNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
             window.history.pushState(null, null, _this2.checkboxService.getCurrentState());
 
             _this2.router.render(decodeURI(window.location.pathname));
           }
-        }
-      });
+        });
+      }
     } // eslint-disable-next-line class-methods-use-this
 
   }, {
     key: "renderSingleNewsPage",
     value: function renderSingleNewsPage(newsElems) {
-      var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.singleNewsPage;
+      var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsPage;
+      var singleNewsContainer = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsContainer;
       var index = window.location.pathname.split('/news/')[1].trim();
       var isFind = false;
 
@@ -705,45 +850,43 @@ function () {
         newsElems.forEach(function (news) {
           if (Number(news.id) === Number(index)) {
             isFind = true;
-            singleNewsPage.innerHTML = viewTemplate(news);
+            singleNewsContainer.innerHTML = viewTemplate(news);
           }
         });
       } // eslint-disable-next-line no-unused-expressions
 
 
-      isFind ? singleNewsPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock) : this.renderErrorPage();
+      isFind ? singleNewsPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock) : this.renderErrorPage();
+    } // eslint-disable-next-line class-methods-use-this
+
+  }, {
+    key: "renderComments",
+    value: function renderComments(data) {
+      var commentsContainer = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.commentsContainer;
+      commentsContainer.innerHTML = commentTemplate(data);
     }
   }, {
     key: "renderErrorPage",
     value: function renderErrorPage() {
       window.history.pushState(null, null, '/404');
       this.router.render(decodeURI(window.location.pathname));
-    } // eslint-disable-next-line class-methods-use-this
-
-  }, {
-    key: "resetStartPage",
-    value: function resetStartPage() {
-      var mainPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.mainPage;
-      var postNewsPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.postNewsPage;
-      mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock);
-      postNewsPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayNone);
     }
   }, {
     key: "initAboutPage",
     value: function initAboutPage() {
       var _this3 = this;
 
-      var aboutButton = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.aboutButton;
-      var aboutPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.aboutPage;
+      var aboutButton = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.aboutButton;
+      var aboutPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.aboutPage;
+      var mainPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.mainPage;
       aboutButton.addEventListener('click', function (event) {
         event.preventDefault();
         window.history.pushState(null, null, '/about');
 
         _this3.router.render(decodeURI(window.location.pathname));
 
-        _this3.resetStartPage();
-
-        aboutPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock);
+        mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+        aboutPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
       });
     }
   }, {
@@ -751,30 +894,80 @@ function () {
     value: function renderAboutPage() {
       var _this4 = this;
 
-      var aboutPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.aboutPage;
-      var postNewsPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.postNewsPage;
-      postNewsPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayNone);
-      aboutPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock);
-      aboutPage.addEventListener('click', function (event) {
-        event.preventDefault();
+      var aboutPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.aboutPage;
+      var header = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.header;
+      var postNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.postNewsPage;
+      var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsPage;
+      singleNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      postNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      aboutPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
 
-        if (aboutPage.classList.contains(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock)) {
+      if (aboutPage.classList.contains(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock)) {
+        header.addEventListener('click', function (event) {
+          event.preventDefault();
           var clicked = event.target;
 
-          if (clicked.classList.contains('back')) {
-            aboutPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock);
+          if (clicked.classList.contains('main-btn')) {
+            event.preventDefault();
+            aboutPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
             window.history.pushState(null, null, _this4.checkboxService.getCurrentState());
 
             _this4.router.render(decodeURI(window.location.pathname));
           }
-        }
+        });
+      }
+    }
+  }, {
+    key: "initPostNewsPage",
+    value: function initPostNewsPage() {
+      var _this5 = this;
+
+      var feedbackButton = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.feedbackButton;
+      var postNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.postNewsPage;
+      var mainPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.mainPage;
+      feedbackButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        window.history.pushState(null, null, '/feedback');
+
+        _this5.router.render(decodeURI(window.location.pathname));
+
+        mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+        postNewsPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
       });
+    }
+  }, {
+    key: "renderPostNewsPage",
+    value: function renderPostNewsPage() {
+      var _this6 = this;
+
+      var postNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.postNewsPage;
+      var header = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.header;
+      var aboutPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.aboutPage;
+      var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsPage;
+      singleNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      aboutPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      postNewsPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+
+      if (postNewsPage.classList.contains(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock)) {
+        header.addEventListener('click', function (event) {
+          event.preventDefault();
+          var clicked = event.target;
+
+          if (clicked.classList.contains('main-btn')) {
+            event.preventDefault();
+            postNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+            window.history.pushState(null, null, _this6.checkboxService.getCurrentState());
+
+            _this6.router.render(decodeURI(window.location.pathname));
+          }
+        });
+      }
     } // eslint-disable-next-line class-methods-use-this
 
   }, {
     key: "filterResult",
     value: function filterResult(newsElems, filter) {
-      var options = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].filterOptions; // eslint-disable-next-line no-unused-vars
+      var options = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].filterOptions; // eslint-disable-next-line no-unused-vars
 
       var newsElemsCopy = _toConsumableArray(newsElems);
 
@@ -818,7 +1011,7 @@ function () {
   }, {
     key: "clearCheckbox",
     value: function clearCheckbox() {
-      var checkboxes = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.checkboxes;
+      var checkboxes = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.checkboxes;
 
       _toConsumableArray(checkboxes).forEach(function (checkbox) {
         // eslint-disable-next-line no-param-reassign
@@ -828,13 +1021,13 @@ function () {
   }, {
     key: "initResetCheckbox",
     value: function initResetCheckbox() {
-      var _this5 = this;
+      var _this7 = this;
 
-      var clearFiltersBtn = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.clearFiltersBtn;
+      var clearFiltersBtn = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.clearFiltersBtn;
       clearFiltersBtn.addEventListener('click', function (event) {
         event.preventDefault();
 
-        _this5.clearCheckbox();
+        _this7.clearCheckbox();
       });
     }
   }]);
@@ -932,6 +1125,43 @@ function () {
 
 /***/ }),
 
+/***/ "./templates/comments-template.handlebars":
+/*!************************************************!*\
+  !*** ./templates/comments-template.handlebars ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Handlebars = __webpack_require__(/*! ../../node_modules/handlebars/runtime.js */ "../node_modules/handlebars/runtime.js");
+function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "  <div class=\"row mt-5\" style=\"border-bottom: 1px dashed black\">\n    <div class=\"col-sm-12\">\n      <h6 class=\"title\">"
+    + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":4,"column":24},"end":{"line":4,"column":33}}}) : helper)))
+    + "</h6>\n    </div>\n    <div class=\"col-sm-12\">\n      <p class=\"author font-italic\">"
+    + alias4(((helper = (helper = lookupProperty(helpers,"author") || (depth0 != null ? lookupProperty(depth0,"author") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"author","hash":{},"data":data,"loc":{"start":{"line":7,"column":36},"end":{"line":7,"column":46}}}) : helper)))
+    + "</p>\n    </div>\n    <div class=\"col-sm-12\">\n      <p class=\"text\">"
+    + alias4(((helper = (helper = lookupProperty(helpers,"text") || (depth0 != null ? lookupProperty(depth0,"text") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"text","hash":{},"data":data,"loc":{"start":{"line":10,"column":22},"end":{"line":10,"column":30}}}) : helper)))
+    + "</p>\n    </div>\n  </div>\n";
+},"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return ((stack1 = lookupProperty(helpers,"each").call(depth0 != null ? depth0 : (container.nullContext || {}),depth0,{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":1,"column":0},"end":{"line":13,"column":9}}})) != null ? stack1 : "");
+},"useData":true});
+
+/***/ }),
+
 /***/ "./templates/preview-template.handlebars":
 /*!***********************************************!*\
   !*** ./templates/preview-template.handlebars ***!
@@ -953,11 +1183,13 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
     + alias4(((helper = (helper = lookupProperty(helpers,"id") || (depth0 != null ? lookupProperty(depth0,"id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data,"loc":{"start":{"line":2,"column":58},"end":{"line":2,"column":64}}}) : helper)))
     + "\">\n    <div class=\"card\">\n      <img src=\""
     + alias4(alias5(((stack1 = (depth0 != null ? lookupProperty(depth0,"image") : depth0)) != null ? lookupProperty(stack1,"small") : stack1), depth0))
-    + "\"\n           class=\"rounded mx-auto d-block mt-3\"\n           width=\"180\"\n           height=\"120\"\n           alt=\""
+    + "\"\n           class=\"rounded mx-auto d-block mt-3 img-fluid\"\n           width=\"240\"\n           height=\"135\"\n           alt=\""
     + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":8,"column":16},"end":{"line":8,"column":25}}}) : helper)))
     + "\"\n           title=\""
     + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":9,"column":18},"end":{"line":9,"column":27}}}) : helper)))
-    + "\"/>\n      <div class=\"card-body\">\n        <h6 class=\"text-center\">\n          "
+    + "\"/>\n      <div class=\"card-body\">\n        <h6 class=\"text-center single-news-title\" data-index=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"id") || (depth0 != null ? lookupProperty(depth0,"id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data,"loc":{"start":{"line":11,"column":62},"end":{"line":11,"column":68}}}) : helper)))
+    + "\">\n          "
     + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":12,"column":10},"end":{"line":12,"column":19}}}) : helper)))
     + "\n        </h6>\n        <p class=\"text-muted\">категория: "
     + alias4(alias5(((stack1 = (depth0 != null ? lookupProperty(depth0,"features") : depth0)) != null ? lookupProperty(stack1,"newsCategory") : stack1), depth0))
@@ -1004,7 +1236,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
     + alias4(((helper = (helper = lookupProperty(helpers,"id") || (depth0 != null ? lookupProperty(depth0,"id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data,"loc":{"start":{"line":1,"column":46},"end":{"line":1,"column":52}}}) : helper)))
     + "\">\n  <div class=\"card\">\n    <img src=\""
     + alias4(alias5(((stack1 = (depth0 != null ? lookupProperty(depth0,"image") : depth0)) != null ? lookupProperty(stack1,"large") : stack1), depth0))
-    + "\"\n         class=\"rounded mx-auto d-block mt-3\"\n         width=\"480\"\n         height=\"300\"\n         alt=\""
+    + "\"\n         class=\"rounded mx-auto d-block mt-3 img-fluid pl-3 pr-3\"\n         width=550\"\n         height=\"370\"\n         alt=\""
     + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":7,"column":14},"end":{"line":7,"column":23}}}) : helper)))
     + "\"\n         title=\""
     + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":8,"column":16},"end":{"line":8,"column":25}}}) : helper)))
@@ -1020,9 +1252,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
     + alias4(alias5(((stack1 = (depth0 != null ? lookupProperty(depth0,"features") : depth0)) != null ? lookupProperty(stack1,"newsActivity") : stack1), depth0))
     + ";\n        рейтинг: "
     + alias4(alias5(((stack1 = (depth0 != null ? lookupProperty(depth0,"features") : depth0)) != null ? lookupProperty(stack1,"newsRating") : stack1), depth0))
-    + "</p>\n    </div>\n    <button type=\"button\"\n            class=\"btn-primary btn-sm ml-3 mb-3 container-button back\"\n            data-index=\""
-    + alias4(((helper = (helper = lookupProperty(helpers,"id") || (depth0 != null ? lookupProperty(depth0,"id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data,"loc":{"start":{"line":22,"column":24},"end":{"line":22,"column":30}}}) : helper)))
-    + "\">\n      На главную\n    </button>\n  </div>\n</div>\n";
+    + "</p>\n    </div>\n  </div>\n</div>\n";
 },"useData":true});
 
 /***/ }),

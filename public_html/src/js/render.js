@@ -1,7 +1,10 @@
+import $ from 'jquery';
+
 import { CONFIG } from './config';
 
 const previewTemplate = require('../templates/preview-template.handlebars');
 const viewTemplate = require('../templates/view-template.handlebars');
+const commentTemplate = require('../templates/comments-template.handlebars');
 
 // eslint-disable-next-line import/prefer-default-export
 export class Render {
@@ -11,8 +14,24 @@ export class Render {
   }
 
   // eslint-disable-next-line class-methods-use-this
+  scrollToContacts() {
+    $('#contactsButton')
+      .click(() => {
+        $([document.documentElement, document.body])
+          .animate({
+            scrollTop: $('.contacts')
+              .offset().top,
+          }, 0);
+      });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   renderMainPage(newsElems) {
     const { mainPage } = CONFIG.elements;
+    const { singleNewsPage } = CONFIG.elements;
+
+    this.scrollToContacts();
+
     const allNews = document.querySelectorAll('.single-news');
 
     [...allNews].forEach((news) => {
@@ -28,7 +47,7 @@ export class Render {
     });
 
     mainPage.classList.add(CONFIG.displayBlock);
-    this.singleNewsPage.classList.remove(CONFIG.displayBlock);
+    singleNewsPage.classList.remove(CONFIG.displayBlock);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -36,8 +55,21 @@ export class Render {
     const { mainPage } = CONFIG.elements;
     const { allNewsPage } = CONFIG.elements;
     allNewsPage.innerHTML = previewTemplate(data);
+    const singleNewsTitle = document.querySelectorAll('.single-news-title');
     const singleNewsButton = document
       .querySelectorAll('.single-news-btn');
+
+    singleNewsTitle.forEach((title) => {
+      // eslint-disable-next-line no-param-reassign
+      title.style.cursor = 'pointer';
+      title.addEventListener('click', (event) => {
+        event.preventDefault();
+        const { index } = title.dataset;
+        window.history.pushState(null, null, `/news/${index}`);
+        this.router.render(decodeURI(window.location.pathname));
+        mainPage.classList.remove(CONFIG.displayBlock);
+      });
+    });
 
     singleNewsButton.forEach((button) => {
       button.addEventListener('click', (event) => {
@@ -51,24 +83,30 @@ export class Render {
   }
 
   initSingleNewsPage() {
-    this.singleNewsPage = CONFIG.elements.singleNewsPage;
-    this.singleNewsPage.addEventListener('click',
-      (event) => {
-        event.preventDefault();
-        if (this.singleNewsPage.classList.contains(CONFIG.displayBlock)) {
-          const clicked = event.target;
+    const { singleNewsPage } = CONFIG.elements;
+    const { header } = CONFIG.elements;
 
-          if (clicked.classList.contains('back')) {
-            window.history.pushState(null, null, this.checkboxService.getCurrentState());
-            this.router.render(decodeURI(window.location.pathname));
-          }
+    singleNewsPage.classList.add(CONFIG.displayBlock);
+
+    if (singleNewsPage.classList.contains(CONFIG.displayBlock)) {
+      header.addEventListener('click', (event) => {
+        event.preventDefault();
+        const clicked = event.target;
+
+        if (clicked.classList.contains('main-btn')) {
+          event.preventDefault();
+          singleNewsPage.classList.remove(CONFIG.displayBlock);
+          window.history.pushState(null, null, this.checkboxService.getCurrentState());
+          this.router.render(decodeURI(window.location.pathname));
         }
       });
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this
   renderSingleNewsPage(newsElems) {
     const { singleNewsPage } = CONFIG.elements;
+    const { singleNewsContainer } = CONFIG.elements;
     const index = window.location.pathname.split('/news/')[1].trim();
     let isFind = false;
 
@@ -76,7 +114,7 @@ export class Render {
       newsElems.forEach((news) => {
         if (Number(news.id) === Number(index)) {
           isFind = true;
-          singleNewsPage.innerHTML = viewTemplate(news);
+          singleNewsContainer.innerHTML = viewTemplate(news);
         }
       });
     }
@@ -86,54 +124,95 @@ export class Render {
       : this.renderErrorPage();
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  renderComments(data) {
+    const { commentsContainer } = CONFIG.elements;
+    commentsContainer.innerHTML = commentTemplate(data);
+  }
+
   renderErrorPage() {
     window.history.pushState(null, null, '/404');
     this.router.render(decodeURI(window.location.pathname));
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  resetStartPage() {
-    const { mainPage } = CONFIG.elements;
-    const { postNewsPage } = CONFIG.elements;
-
-    mainPage.classList.remove(CONFIG.displayBlock);
-    postNewsPage.classList.add(CONFIG.displayNone);
-  }
-
   initAboutPage() {
     const { aboutButton } = CONFIG.elements;
     const { aboutPage } = CONFIG.elements;
+    const { mainPage } = CONFIG.elements;
 
     aboutButton.addEventListener('click', (event) => {
       event.preventDefault();
       window.history.pushState(null, null, '/about');
       this.router.render(decodeURI(window.location.pathname));
-      this.resetStartPage();
+      mainPage.classList.remove(CONFIG.displayBlock);
       aboutPage.classList.add(CONFIG.displayBlock);
     });
   }
 
   renderAboutPage() {
     const { aboutPage } = CONFIG.elements;
+    const { header } = CONFIG.elements;
     const { postNewsPage } = CONFIG.elements;
+    const { singleNewsPage } = CONFIG.elements;
 
-    postNewsPage.classList.add(CONFIG.displayNone);
+    singleNewsPage.classList.remove(CONFIG.displayBlock);
+    postNewsPage.classList.remove(CONFIG.displayBlock);
     aboutPage.classList.add(CONFIG.displayBlock);
 
-    aboutPage.addEventListener('click',
-      (event) => {
+    if (aboutPage.classList.contains(CONFIG.displayBlock)) {
+      header.addEventListener('click', (event) => {
         event.preventDefault();
-        if (aboutPage.classList.contains(CONFIG.displayBlock)) {
-          const clicked = event.target;
+        const clicked = event.target;
 
-          if (clicked.classList.contains('back')) {
-            aboutPage.classList.remove(CONFIG.displayBlock);
-            window.history.pushState(null, null, this.checkboxService.getCurrentState());
-            this.router.render(decodeURI(window.location.pathname));
-          }
+        if (clicked.classList.contains('main-btn')) {
+          event.preventDefault();
+          aboutPage.classList.remove(CONFIG.displayBlock);
+          window.history.pushState(null, null, this.checkboxService.getCurrentState());
+          this.router.render(decodeURI(window.location.pathname));
         }
       });
+    }
   }
+
+  initPostNewsPage() {
+    const { feedbackButton } = CONFIG.elements;
+    const { postNewsPage } = CONFIG.elements;
+    const { mainPage } = CONFIG.elements;
+
+    feedbackButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      window.history.pushState(null, null, '/feedback');
+      this.router.render(decodeURI(window.location.pathname));
+      mainPage.classList.remove(CONFIG.displayBlock);
+      postNewsPage.classList.add(CONFIG.displayBlock);
+    });
+  }
+
+  renderPostNewsPage() {
+    const { postNewsPage } = CONFIG.elements;
+    const { header } = CONFIG.elements;
+    const { aboutPage } = CONFIG.elements;
+    const { singleNewsPage } = CONFIG.elements;
+
+    singleNewsPage.classList.remove(CONFIG.displayBlock);
+    aboutPage.classList.remove(CONFIG.displayBlock);
+    postNewsPage.classList.add(CONFIG.displayBlock);
+
+    if (postNewsPage.classList.contains(CONFIG.displayBlock)) {
+      header.addEventListener('click', (event) => {
+        event.preventDefault();
+        const clicked = event.target;
+
+        if (clicked.classList.contains('main-btn')) {
+          event.preventDefault();
+          postNewsPage.classList.remove(CONFIG.displayBlock);
+          window.history.pushState(null, null, this.checkboxService.getCurrentState());
+          this.router.render(decodeURI(window.location.pathname));
+        }
+      });
+    }
+  }
+
 
   // eslint-disable-next-line class-methods-use-this
   filterResult(newsElems, filter) {
@@ -153,14 +232,14 @@ export class Render {
         filter[option].forEach((item) => {
           newsElemsCopy.forEach((news) => {
             if (typeof news.features[option] === 'string'
-              && news.features[option].toLowerCase()
-                .indexOf(item) !== -1) {
+                            && news.features[option].toLowerCase()
+                              .indexOf(item) !== -1) {
               result.push(news);
               isFiltered = true;
             }
 
             if (typeof news.features[option] === 'number'
-              && news.features[option] === Number(item)) {
+                            && news.features[option] === Number(item)) {
               result.push(news);
               isFiltered = true;
             }

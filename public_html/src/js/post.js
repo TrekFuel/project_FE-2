@@ -3,6 +3,8 @@ import 'jquery-validation';
 
 import { CONFIG } from './config';
 
+const commentTemplate = require('../templates/comments-template.handlebars');
+
 // eslint-disable-next-line import/prefer-default-export
 export class Post {
   constructor() {
@@ -47,6 +49,56 @@ export class Post {
       });
   }
 
+  sendComment() {
+    const { commentTitle } = CONFIG.elements;
+    const { commentAuthor } = CONFIG.elements;
+    const { commentText } = CONFIG.elements;
+
+    fetch(`${this.api}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(
+        {
+          title: `${commentTitle.value}`,
+          author: `${commentAuthor.value}`,
+          text: `${commentText.value}`,
+        },
+      ),
+    })
+      .then((res) => {
+        if (res.status !== 201) {
+          return Promise.reject(new Error(res.statusText));
+        }
+        return Promise.resolve(res);
+      })
+      .then(() => {
+        commentTitle.value = '';
+        commentAuthor.value = '';
+        commentText.value = '';
+      })
+      .then(() => {
+        this.getNewComment();
+      });
+  }
+
+  getNewComment() {
+    const { commentsContainer } = CONFIG.elements;
+
+    fetch(`${CONFIG.api}/comments`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        this.comments = data;
+        commentsContainer.innerHTML = commentTemplate(data);
+      });
+  }
+
   // eslint-disable-next-line class-methods-use-this
   initPost() {
     const options = {
@@ -63,6 +115,7 @@ export class Post {
           successMsg.remove();
         }, 5000);
       },
+
       invalidHandler: () => {
         const errorMsg = document.createElement('div');
         errorMsg.innerHTML = 'Пожалуйста, проверьте правильность ввода данных!';
@@ -74,6 +127,7 @@ export class Post {
           errorMsg.remove();
         }, 5000);
       },
+
       rules: {
         email: {
           required: true,
@@ -96,10 +150,30 @@ export class Post {
           minlength: 50,
         },
       },
+
+      messages: {
+        email: {
+          required: 'Пожалуйста, введите Ваш email',
+          email: 'Ввведите Ваш email в корректном формате, пожалуйста (test@gmail.com)',
+        },
+        name: 'Пожалуйста, введите Ваше имя (минимум 2 буквы)',
+        country: 'Пожалуйста, введите Вашу страну (минимум 3 буквы)',
+        topic: 'Пожалуйста, введите тему Вашей новости (минимум 10 символов)',
+        text: 'Пожалуйста, расскажите про Вашу новость (минимум 50 символов)',
+      },
       validClass: 'text-success',
       errorClass: 'text-danger',
     };
     $('#postForm')
       .validate(options);
+  }
+
+  initComment() {
+    const { postCommentButton } = CONFIG.elements;
+
+    postCommentButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.sendComment();
+    });
   }
 }

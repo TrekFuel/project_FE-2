@@ -1,9 +1,9 @@
 <div class="col mt-3 single-news" data-index="{{id}}">
   <div class="card">
     <img src="{{image.large}}"
-         class="rounded mx-auto d-block mt-3"
-         width="480"
-         height="300"
+         class="rounded mx-auto d-block mt-3 img-fluid pl-3 pr-3"
+         width=550"
+         height="370"
          alt="{{title}}"
          title="{{title}}"/>
     <div class="card-body">
@@ -17,10 +17,5 @@
         {{features.newsDate}}; активность: {{features.newsActivity}};
         рейтинг: {{features.newsRating}}</p>
     </div>
-    <button type="button"
-            class="btn-primary btn-sm ml-3 mb-3 container-button back"
-            data-index="{{id}}">
-      На главную
-    </button>
   </div>
 </div>
