@@ -63,7 +63,7 @@ class App {
     this.router.addRoute('news', this.render.renderSingleNewsPage
       .bind(this.render, this.news));
     this.router.addRoute('filter', this.render.renderFilterResult
-      .bind(this.render, this.news, this.checkboxService.filters));
+      .bind(this.render, this.news, this.checkboxService));
     this.router.addRoute('about', this.render.renderAboutPage
       .bind(this.render, this.news));
     this.router.addRoute('feedback', this.render.renderPostNewsPage

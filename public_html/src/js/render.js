@@ -213,7 +213,6 @@ export class Render {
     }
   }
 
-
   // eslint-disable-next-line class-methods-use-this
   filterResult(newsElems, filter) {
     const options = CONFIG.filterOptions;
@@ -252,8 +251,8 @@ export class Render {
     return result;
   }
 
-  renderFilterResult(newsElems, filter) {
-    const result = this.filterResult(newsElems, filter);
+  renderFilterResult(newsElems, { filters }) {
+    const result = this.filterResult(newsElems, filters);
     this.renderMainPage(result);
   }
 
