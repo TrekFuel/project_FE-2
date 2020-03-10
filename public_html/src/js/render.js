@@ -29,6 +29,9 @@ export class Render {
   renderMainPage(newsElems) {
     const { mainPage } = CONFIG.elements;
     const { singleNewsPage } = CONFIG.elements;
+    const { errorPage } = CONFIG.elements;
+    const { aboutPage } = CONFIG.elements;
+    const { postNewsPage } = CONFIG.elements;
 
     this.scrollToContacts();
 
@@ -48,6 +51,9 @@ export class Render {
 
     mainPage.classList.add(CONFIG.displayBlock);
     singleNewsPage.classList.remove(CONFIG.displayBlock);
+    errorPage.classList.remove(CONFIG.displayBlock);
+    aboutPage.classList.remove(CONFIG.displayBlock);
+    postNewsPage.classList.remove(CONFIG.displayBlock);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -85,8 +91,14 @@ export class Render {
   initSingleNewsPage() {
     const { singleNewsPage } = CONFIG.elements;
     const { header } = CONFIG.elements;
+    const { aboutPage } = CONFIG.elements;
+    const { mainPage } = CONFIG.elements;
+    const { postNewsPage } = CONFIG.elements;
 
     singleNewsPage.classList.add(CONFIG.displayBlock);
+    aboutPage.classList.remove(CONFIG.displayBlock);
+    mainPage.classList.remove(CONFIG.displayBlock);
+    postNewsPage.classList.remove(CONFIG.displayBlock);
 
     if (singleNewsPage.classList.contains(CONFIG.displayBlock)) {
       header.addEventListener('click', (event) => {
@@ -107,8 +119,15 @@ export class Render {
   renderSingleNewsPage(newsElems) {
     const { singleNewsPage } = CONFIG.elements;
     const { singleNewsContainer } = CONFIG.elements;
+    const { aboutPage } = CONFIG.elements;
+    const { postNewsPage } = CONFIG.elements;
+    const { mainPage } = CONFIG.elements;
     const index = window.location.pathname.split('/news/')[1].trim();
     let isFind = false;
+
+    aboutPage.classList.remove(CONFIG.displayBlock);
+    postNewsPage.classList.remove(CONFIG.displayBlock);
+    mainPage.classList.remove(CONFIG.displayBlock);
 
     if (newsElems.length) {
       newsElems.forEach((news) => {
@@ -136,15 +155,21 @@ export class Render {
   }
 
   initAboutPage() {
+    this.scrollToContacts();
+
     const { aboutButton } = CONFIG.elements;
     const { aboutPage } = CONFIG.elements;
     const { mainPage } = CONFIG.elements;
+    const { errorPage } = CONFIG.elements;
+
+    mainPage.classList.remove(CONFIG.displayBlock);
 
     aboutButton.addEventListener('click', (event) => {
       event.preventDefault();
       window.history.pushState(null, null, '/about');
       this.router.render(decodeURI(window.location.pathname));
       mainPage.classList.remove(CONFIG.displayBlock);
+      errorPage.classList.remove(CONFIG.displayBlock);
       aboutPage.classList.add(CONFIG.displayBlock);
     });
   }
@@ -154,9 +179,11 @@ export class Render {
     const { header } = CONFIG.elements;
     const { postNewsPage } = CONFIG.elements;
     const { singleNewsPage } = CONFIG.elements;
+    const { mainPage } = CONFIG.elements;
 
     singleNewsPage.classList.remove(CONFIG.displayBlock);
     postNewsPage.classList.remove(CONFIG.displayBlock);
+    mainPage.classList.remove(CONFIG.displayBlock);
     aboutPage.classList.add(CONFIG.displayBlock);
 
     if (aboutPage.classList.contains(CONFIG.displayBlock)) {
@@ -177,6 +204,7 @@ export class Render {
   initPostNewsPage() {
     const { feedbackButton } = CONFIG.elements;
     const { postNewsPage } = CONFIG.elements;
+    const { errorPage } = CONFIG.elements;
     const { mainPage } = CONFIG.elements;
 
     feedbackButton.addEventListener('click', (event) => {
@@ -184,6 +212,7 @@ export class Render {
       window.history.pushState(null, null, '/feedback');
       this.router.render(decodeURI(window.location.pathname));
       mainPage.classList.remove(CONFIG.displayBlock);
+      errorPage.classList.remove(CONFIG.displayBlock);
       postNewsPage.classList.add(CONFIG.displayBlock);
     });
   }
@@ -193,7 +222,9 @@ export class Render {
     const { header } = CONFIG.elements;
     const { aboutPage } = CONFIG.elements;
     const { singleNewsPage } = CONFIG.elements;
+    const { mainPage } = CONFIG.elements;
 
+    mainPage.classList.remove(CONFIG.displayBlock);
     singleNewsPage.classList.remove(CONFIG.displayBlock);
     aboutPage.classList.remove(CONFIG.displayBlock);
     postNewsPage.classList.add(CONFIG.displayBlock);

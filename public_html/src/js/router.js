@@ -6,9 +6,12 @@ export class Router {
     this.routes = {
       404: () => {
         const { errorPage } = CONFIG.elements;
-        const { postNewsPage } = CONFIG.elements;
+        const { singleNewsPage } = CONFIG.elements;
+        const { mainPage } = CONFIG.elements;
+
         errorPage.classList.add(CONFIG.displayBlock);
-        postNewsPage.classList.add(CONFIG.displayNone);
+        singleNewsPage.classList.remove(CONFIG.displayBlock);
+        mainPage.classList.remove(CONFIG.displayBlock);
       },
     };
 

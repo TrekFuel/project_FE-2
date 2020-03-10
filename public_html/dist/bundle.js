@@ -759,6 +759,9 @@ function () {
     value: function renderMainPage(newsElems) {
       var mainPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.mainPage;
       var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsPage;
+      var errorPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.errorPage;
+      var aboutPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.aboutPage;
+      var postNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.postNewsPage;
       this.scrollToContacts();
       var allNews = document.querySelectorAll('.single-news');
 
@@ -776,6 +779,9 @@ function () {
 
       mainPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
       singleNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      errorPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      aboutPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      postNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
     } // eslint-disable-next-line class-methods-use-this
 
   }, {
@@ -820,7 +826,13 @@ function () {
 
       var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsPage;
       var header = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.header;
+      var aboutPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.aboutPage;
+      var mainPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.mainPage;
+      var postNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.postNewsPage;
       singleNewsPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      aboutPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      postNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
 
       if (singleNewsPage.classList.contains(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock)) {
         header.addEventListener('click', function (event) {
@@ -843,8 +855,14 @@ function () {
     value: function renderSingleNewsPage(newsElems) {
       var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsPage;
       var singleNewsContainer = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsContainer;
+      var aboutPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.aboutPage;
+      var postNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.postNewsPage;
+      var mainPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.mainPage;
       var index = window.location.pathname.split('/news/')[1].trim();
       var isFind = false;
+      aboutPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      postNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
 
       if (newsElems.length) {
         newsElems.forEach(function (news) {
@@ -876,9 +894,12 @@ function () {
     value: function initAboutPage() {
       var _this3 = this;
 
+      this.scrollToContacts();
       var aboutButton = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.aboutButton;
       var aboutPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.aboutPage;
       var mainPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.mainPage;
+      var errorPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.errorPage;
+      mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
       aboutButton.addEventListener('click', function (event) {
         event.preventDefault();
         window.history.pushState(null, null, '/about');
@@ -886,6 +907,7 @@ function () {
         _this3.router.render(decodeURI(window.location.pathname));
 
         mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+        errorPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
         aboutPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
       });
     }
@@ -898,8 +920,10 @@ function () {
       var header = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.header;
       var postNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.postNewsPage;
       var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsPage;
+      var mainPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.mainPage;
       singleNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
       postNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+      mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
       aboutPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
 
       if (aboutPage.classList.contains(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock)) {
@@ -924,6 +948,7 @@ function () {
 
       var feedbackButton = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.feedbackButton;
       var postNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.postNewsPage;
+      var errorPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.errorPage;
       var mainPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.mainPage;
       feedbackButton.addEventListener('click', function (event) {
         event.preventDefault();
@@ -932,6 +957,7 @@ function () {
         _this5.router.render(decodeURI(window.location.pathname));
 
         mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
+        errorPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
         postNewsPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
       });
     }
@@ -944,6 +970,8 @@ function () {
       var header = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.header;
       var aboutPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.aboutPage;
       var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.singleNewsPage;
+      var mainPage = _config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].elements.mainPage;
+      mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
       singleNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
       aboutPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
       postNewsPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_1__["CONFIG"].displayBlock);
@@ -1076,9 +1104,11 @@ function () {
     this.routes = {
       404: function _() {
         var errorPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.errorPage;
-        var postNewsPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.postNewsPage;
+        var singleNewsPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.singleNewsPage;
+        var mainPage = _config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].elements.mainPage;
         errorPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock);
-        postNewsPage.classList.add(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayNone);
+        singleNewsPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock);
+        mainPage.classList.remove(_config__WEBPACK_IMPORTED_MODULE_0__["CONFIG"].displayBlock);
       }
     };
     this.allNews = document.querySelectorAll('.single-news');
