@@ -58,7 +58,7 @@
     "bootstrap": "^4.4.1",
     "handlebars": "^4.7.3",
     "handlebars-loader": "^1.7.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jquery-validation": "^1.19.1",
     "popper.js": "^1.16.0"
   }
